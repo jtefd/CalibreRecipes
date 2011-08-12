@@ -18,8 +18,8 @@ class TheDailyMail(BasicNewsRecipe):
 
                 '''
 
-    remove_tags = [ dict(name='div', attrs={'class':['article-icon-links-container','print-or-mail-links cleared',
-                                                     'social-links cleared','explore-links','relatedItems','intellicrumbs box','travel','moduleHalf']}),
+    remove_tags = [ dict(name='div', attrs={'class':['article-icon-links-container','print-or-mail-links cleared','floatRHS',
+                                                     'social-links cleared','explore-links','relatedItems','intellicrumbs box','travel','moduleHalf','artSplitter']}),
                     dict(name='div', attrs={'id':['link-unit-wrapper','pushdown-ad','reader-comments','googleAds',]}),
                     dict(name='h3', attrs={'class':['social-links-title']}),
                      dict(name='span', attrs={'class':['clickToEnlargeTop']}),
@@ -31,7 +31,6 @@ class TheDailyMail(BasicNewsRecipe):
     no_stylesheets = True
 
     feeds          = [
-	(u'Home', u'http://www.dailymail.co.uk/home/index.rss'),
 	(u'News', u'http://www.dailymail.co.uk/news/index.rss'),
 	(u'Sport', u'http://www.dailymail.co.uk/sport/index.rss'),
 	(u'TV and Showbiz', u'http://www.dailymail.co.uk/tvshowbiz/index.rss'),

@@ -57,6 +57,7 @@ class TelegraphUK(BasicNewsRecipe):
                         ,(u'Earth News'     , u'http://www.telegraph.co.uk/earth/earthnews/rss'                                  )
                         ,(u'Comment'        , u'http://www.telegraph.co.uk/comment/rss'                                          )
                         ,(u'How about that?', u'http://www.telegraph.co.uk/news/newstopics/howaboutthat/rss'                     )
+                        ,(u'Letters'        , u'http://www.telegraph.co.uk/comment/letters/rss'                                  )
                          ]
 
     def get_article_url(self, article):
