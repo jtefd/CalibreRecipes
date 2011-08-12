@@ -1,0 +1,40 @@
+class TelegraphBlogs(BasicNewsRecipe):
+    title          = u'Telegraph Blogs'
+    oldest_article = 2
+    description = 'Telegraph Blogs'
+    publisher = 'Telegraph Media Group Ltd'
+    language = 'en_GB'
+    category = 'news, politics, UK'
+    max_articles_per_feed = 100
+    no_stylesheets = True
+    remove_empty_feeds = True
+    use_embedded_content = False
+
+    extra_css           = '''
+                        h1{font-family :Arial,Helvetica,sans-serif; font-size:large; }
+                        h2{font-family :Arial,Helvetica,sans-serif; font-size:x-small; color:#444444;}
+                        .story{font-family :Arial,Helvetica,sans-serif; font-size: x-small;}
+                        .byline{color:#666666; font-family :Arial,Helvetica,sans-serif; font-size: xx-small;}
+                        a{color:#234B7B; }
+                        .imageExtras{color:#666666; font-family :Arial,Helvetica,sans-serif; font-size: xx-small;}
+                        '''
+
+    conversion_options = {
+                          'comment'   : description
+                        , 'tags'      : category
+                        , 'publisher' : publisher
+                        , 'language'  : language
+                        }
+
+    keep_only_tags = [
+                      dict(name='div', attrs={'class':['storyHead', 'story']})
+                     ]
+
+    remove_tags = [
+                   dict(name='img'),
+                   dict(name='span', attrs={'class':['byAuthor commentsLink', 'lastUpdated']}),
+                   dict(name='div', attrs={'class':['tags']})
+                  ]
+   
+	
+    feeds          = [(u'Telegraph Blogs', u'http://blogs.telegraph.co.uk/feed-2/')]
