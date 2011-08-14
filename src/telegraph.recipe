@@ -13,7 +13,7 @@ class TelegraphUK(BasicNewsRecipe):
     oldest_article        = 2
     category              = 'news, politics, UK'
     publisher             = 'Telegraph Media Group ltd.'    
-    max_articles_per_feed = 100
+    max_articles_per_feed = 50
     no_stylesheets        = True
     language              = 'en_GB'
     remove_empty_feeds    = True
@@ -37,12 +37,13 @@ class TelegraphUK(BasicNewsRecipe):
                         
                         
     keep_only_tags      = [
-                           dict(name='div', attrs={'class':['storyHead','byline']})
-                          ,dict(name='div', attrs={'id':'mainBodyArea'           })
+                           dict(name='div', attrs={'class':['storyHead','byline', 'story']})
+                          ,dict(name='div', attrs={'id':'mainBodyArea'})
                           ]
-    remove_tags         = [dict(name='div', attrs={'class':['related_links_inline',"imgindex","next","prev","gutterUnder",'ssImgHide','imageExtras','ssImg hide','related_links_video']})
+    remove_tags         = [dict(name='div', attrs={'class':['related_links_inline',"imgindex","next","prev","gutterUnder",'ssImgHide','imageExtras','ssImg hide','related_links_video', 'tags', 'ssImg', 'artImageExtras']})
                           ,dict(name='ul' , attrs={'class':['shareThis shareBottom']})
-                          ,dict(name='span', attrs={'class':['num','placeComment']})
+                          ,dict(name='span', attrs={'class':['num','placeComment', 'byAuthor commentsLink', 'lastUpdated']})
+                          ,dict(name='p' , attrs={'class':['comments']})
                           ,dict(name='img')
                           ]
 
@@ -50,14 +51,13 @@ class TelegraphUK(BasicNewsRecipe):
                          (u'UK News'        , u'http://www.telegraph.co.uk/news/uknews/rss'                                      )
                         ,(u'World News'     , u'http://www.telegraph.co.uk/news/worldnews/rss'                                   )
                         ,(u'Politics'       , u'http://www.telegraph.co.uk/news/newstopics/politics/rss'                         )
-                        ,(u'Technology News', u'http://www.telegraph.co.uk/scienceandtechnology/technology/technologynews/rss'   )
-                        ,(u'UK News'        , u'http://www.telegraph.co.uk/scienceandtechnology/technology/technologyreviews/rss')
-                        ,(u'Science News'   , u'http://www.telegraph.co.uk/scienceandtechnology/science/sciencenews/rss'         )
-                        ,(u'Sport'          , u'http://www.telegraph.co.uk/sport/rss'                                            )
-                        ,(u'Earth News'     , u'http://www.telegraph.co.uk/earth/earthnews/rss'                                  )
+                        ,(u'Finance'        , u'http://www.telegraph.co.uk/news/newstopics/finance/rss'                          )
+                        ,(u'Technology'     , u'http://www.telegraph.co.uk/scienceandtechnology/technology/technologynews/rss'   )
+                        ,(u'Science'        , u'http://www.telegraph.co.uk/scienceandtechnology/science/sciencenews/rss'         )
+                        ,(u'Sport'          , u'http://www.telegraph.co.uk/sport/rss'                                            )                        
                         ,(u'Comment'        , u'http://www.telegraph.co.uk/comment/rss'                                          )
-                        ,(u'How about that?', u'http://www.telegraph.co.uk/news/newstopics/howaboutthat/rss'                     )
                         ,(u'Letters'        , u'http://www.telegraph.co.uk/comment/letters/rss'                                  )
+                        ,(u'Blogs'          , u'http://blogs.telegraph.co.uk/feed-2/'                                            )
                          ]
 
     def get_article_url(self, article):
