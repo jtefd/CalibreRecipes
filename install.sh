@@ -8,6 +8,5 @@ fi
 
 [ $? -ne 0 ] && exit 1
 
-cp -v *.recipe "$INSTALL_DIR"
+cp -v src/*.recipe "$INSTALL_DIR" && cp -v src/*.pl /usr/local/bin
 
-[ $? -ne 0 ] && exit 1
