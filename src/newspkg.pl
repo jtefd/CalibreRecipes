@@ -15,7 +15,8 @@ my %opts;
 GetOptions(
 	\%opts,
 	'recipes=s',
-	'out=s'
+	'out=s',
+	'gen-index'
 );
 
 $RECIPE_DIR = $opts{'recipes'} || '/usr/local/share/calibre/recipes';
@@ -28,19 +29,20 @@ if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
 }
 
+if (defined($opts{'gen-index'})) {
+	opendir(my $recipe_dir_h, $RECIPE_DIR) or die "Failed reading from source directory \"$RECIPE_DIR\" ($!)";
 
-opendir(my $recipe_dir_h, $RECIPE_DIR) or die "Failed reading from source directory \"$RECIPE_DIR\" ($!)";
+	foreach my $recipe (grep {/\.recipe$/} readdir $recipe_dir_h) {
+		my $recipe_path = catfile(rel2abs($RECIPE_DIR), $recipe);
 
-foreach my $recipe (grep {/\.recipe$/} readdir $recipe_dir_h) {
-	my $recipe_path = catfile(rel2abs($RECIPE_DIR), $recipe);
+		my $ebook_path = catfile(rel2abs($OUT_DIR), $recipe);
+		$ebook_path =~ s/recipe$/mobi/;
 
-	my $ebook_path = catfile(rel2abs($OUT_DIR), $recipe);
-	$ebook_path =~ s/recipe$/mobi/;
+		system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
+	}
 
-	system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
+	closedir $recipe_dir_h;
 }
-
-closedir $recipe_dir_h;
 
 open(my $index_file_h, '>', catfile($OUT_DIR, 'index.html'));
 
