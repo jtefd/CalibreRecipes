@@ -25,7 +25,7 @@ foreach my $recipe (grep {/\.recipe$/} readdir $recipe_dir_h) {
 	my $ebook_path = catfile(rel2abs($OUT_DIR), $recipe);
 	$ebook_path =~ s/recipe$/mobi/;
 
-	#system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
+	system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
 }
 
 closedir $recipe_dir_h;
