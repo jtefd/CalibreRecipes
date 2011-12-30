@@ -29,7 +29,7 @@ if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
 }
 
-if (defined($opts{'gen-index'})) {
+if (!defined($opts{'gen-index'})) {
 	opendir(my $recipe_dir_h, $RECIPE_DIR) or die "Failed reading from source directory \"$RECIPE_DIR\" ($!)";
 
 	foreach my $recipe (grep {/\.recipe$/} readdir $recipe_dir_h) {
