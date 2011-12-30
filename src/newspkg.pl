@@ -62,8 +62,6 @@ opendir(my $out_dir_h, $OUT_DIR);
 foreach my $newsfile (grep {/\.mobi$/} readdir $out_dir_h) {
 	my ($shortname) = ($newsfile =~ /(.*)\.mobi$/);
 
-	$shortname = ucfirst $shortname;
-
 	if (lc "$shortname.txt" eq lc $INDEX_FILE_NAME) {
 		next;
 	}
