@@ -56,7 +56,7 @@ print $index_file_h <<END;
 
 		<hr />
 		
-		<table>	
+		<ul>	
 END
 
 opendir(my $out_dir_h, $OUT_DIR);
@@ -69,30 +69,31 @@ foreach my $newsfile (grep {/\.mobi$/} readdir $out_dir_h) {
 	}
 
 	print $index_file_h <<END;
-		<tr>
-			<td>
+			<li>
 				<a href=$BASE_URL/$newsfile>
 					$shortname
 				</a>
-			</td>
-		</tr>
+			</li>
 END
 }
 
 print $index_file_h <<END;
-		<tr>
-			<td>
+		</ul>
+
+		<hr />
+	
+		<ul>
+			<li>
 				<a href=$BASE_URL/$INDEX_FILE_NAME>
 					Index File
 				</a>
-			</td>
-		</tr>
+			</li>
 END
 
 closedir $out_dir_h;
 
 print $index_file_h <<END;
-		</table>
+		</ul>
 	</body>
 </html>
 END
