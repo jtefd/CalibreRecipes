@@ -3,12 +3,15 @@
 use strict;
 use warnings;
 
+use File::Copy;
 use File::Spec::Functions qw/catfile rel2abs/;
 
-use vars qw/$RECIPE_DIR $OUT_DIR/;
+use vars qw/$RECIPE_DIR $OUT_DIR $HEADER $INDEX_FILE_NAME/;
 
 $RECIPE_DIR = '/usr/local/share/calibre/recipes';
 $OUT_DIR = '/var/www/newspkg';
+$HEADER = 'Tefd.co.uk NewsPkg';
+$INDEX_FILE_NAME = 'TefdNewsPkg';
 
 if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
@@ -22,7 +25,56 @@ foreach my $recipe (grep {/\.recipe$/} readdir $recipe_dir_h) {
 	my $ebook_path = catfile(rel2abs($OUT_DIR), $recipe);
 	$ebook_path =~ s/recipe$/mobi/;
 
-	system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
+	#system("ebook-convert \"$recipe_path\" \"$ebook_path\"");
 }
 
 closedir $recipe_dir_h;
+
+open(my $index_file_h, '>', catfile($OUT_DIR, 'index.html'));
+
+print $index_file_h <<END;
+<html>
+	<head>
+		<title>$HEADER</title>
+	</head>
+	<body>
+		<h1>$HEADER</h1>
+
+		<hr />
+		
+		<table>	
+END
+
+opendir(my $out_dir_h, $OUT_DIR);
+
+foreach my $newsfile (grep {/\.mobi$/} readdir $out_dir_h) {
+	my ($shortname) = ($newsfile =~ /(.*)\.mobi$/);
+
+	$shortname = ucfirst $shortname;
+
+	if (lc $shortname eq lc $INDEX_FILE_NAME) {
+		next;
+	}
+
+	print $index_file_h <<END;
+		<tr>
+			<td>
+				<a href="$shortname.mobi">
+					$shortname
+				</a>
+			</td>
+		</tr>
+END
+}
+
+closedir $out_dir_h;
+
+print $index_file_h <<END;
+		</table>
+	</body>
+</html>
+END
+
+close $index_file_h;
+
+copy catfile($OUT_DIR, 'index.html'), catfile($OUT_DIR, "$INDEX_FILE_NAME.txt")
