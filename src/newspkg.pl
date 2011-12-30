@@ -3,19 +3,31 @@
 use strict;
 use warnings;
 
+use Getopt::Long;
 use File::Copy;
 use File::Spec::Functions qw/catfile rel2abs/;
+use Pod::Usage;
 
-use vars qw/$RECIPE_DIR $OUT_DIR $HEADER $INDEX_FILE_NAME/;
+use vars qw/$BASE_URL $RECIPE_DIR $OUT_DIR $HEADER $INDEX_FILE_NAME/;
 
-$RECIPE_DIR = '/usr/local/share/calibre/recipes';
-$OUT_DIR = '/var/www/newspkg';
+my %opts;
+
+GetOptions(
+	\%opts,
+	'recipes=s',
+	'out=s'
+);
+
+$RECIPE_DIR = $opts{'recipes'} || '/usr/local/share/calibre/recipes';
+$OUT_DIR = $opts{'out'} || '/var/www/newspkg';
 $HEADER = 'Tefd.co.uk NewsPkg';
-$INDEX_FILE_NAME = 'TefdNewsPkg';
+$INDEX_FILE_NAME = 'TefdNewsPkg.txt';
+$BASE_URL = 'http://tefd.co.uk/news';
 
 if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
 }
+
 
 opendir(my $recipe_dir_h, $RECIPE_DIR) or die "Failed reading from source directory \"$RECIPE_DIR\" ($!)";
 
@@ -52,20 +64,30 @@ foreach my $newsfile (grep {/\.mobi$/} readdir $out_dir_h) {
 
 	$shortname = ucfirst $shortname;
 
-	if (lc $shortname eq lc $INDEX_FILE_NAME) {
+	if (lc "$shortname.txt" eq lc $INDEX_FILE_NAME) {
 		next;
 	}
 
 	print $index_file_h <<END;
 		<tr>
 			<td>
-				<a href="$shortname.mobi">
+				<a href=$BASE_URL/$newsfile>
 					$shortname
 				</a>
 			</td>
 		</tr>
 END
 }
+
+print $index_file_h <<END;
+		<tr>
+			<td>
+				<a href=$BASE_URL/$INDEX_FILE_NAME>
+					Index File
+				</a>
+			</td>
+		</tr>
+END
 
 closedir $out_dir_h;
 
@@ -77,4 +99,4 @@ END
 
 close $index_file_h;
 
-copy catfile($OUT_DIR, 'index.html'), catfile($OUT_DIR, "$INDEX_FILE_NAME.txt")
+copy catfile($OUT_DIR, 'index.html'), catfile($OUT_DIR, $INDEX_FILE_NAME);
