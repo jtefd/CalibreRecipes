@@ -18,15 +18,15 @@ GetOptions(
 	'out=s',
 	'header=s',
 	'baseurl=s',
-	'indexfile=s',
+	'index=s',
 	'gen-index'
 );
 
-$RECIPE_DIR = $opts{'recipes'};
-$OUT_DIR = $opts{'out'};
-$HEADER = $opts{'header'};
-$INDEX_FILE_NAME = $opts{'indexfile'};
-$BASE_URL = $opts{'baseurl'};
+$RECIPE_DIR = $opts{'recipes'} or die "Require --recipes option for source Calibre recipe files";
+$OUT_DIR = $opts{'out'} or die "Require --out option for where to store generated ebooks";
+$BASE_URL = $opts{'baseurl'} or die "Require --baseurl option for URL where ebooks will be published";
+$HEADER = $BASE_URL;
+$INDEX_FILE_NAME = $opts{'index'} or die "Require --index option for filename of index file";
 
 if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
