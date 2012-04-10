@@ -16,14 +16,17 @@ GetOptions(
 	\%opts,
 	'recipes=s',
 	'out=s',
+	'header=s',
+	'baseurl=s',
+	'indexfile=s',
 	'gen-index'
 );
 
-$RECIPE_DIR = $opts{'recipes'} || '/usr/local/share/calibre/recipes';
-$OUT_DIR = $opts{'out'} || '/var/www/newspkg';
-$HEADER = 'Tefd.co.uk NewsPkg';
-$INDEX_FILE_NAME = 'TefdNewsPkg.txt';
-$BASE_URL = 'http://tefd.co.uk/news';
+$RECIPE_DIR = $opts{'recipes'};
+$OUT_DIR = $opts{'out'};
+$HEADER = $opts{'header'};
+$INDEX_FILE_NAME = $opts{'indexfile'};
+$BASE_URL = $opts{'baseurl'};
 
 if (!-d $OUT_DIR) {
 	mkdir $OUT_DIR or die "Failed creating output directory \"$OUT_DIR\" ($!)";
